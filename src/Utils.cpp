@@ -11,8 +11,8 @@ using namespace std;
 bool LeggiFile(const string& inputFilePath,
                 double& S,
                 int& n,
-                vector<double>& w,
-                vector<double>& r)
+                double*& w,
+                double*& r)
 {
     // apro il file
     ifstream myfile(inputFilePath);
@@ -24,9 +24,9 @@ bool LeggiFile(const string& inputFilePath,
     string lineafile;
     vector<string> linea_corrente;
 
+
     // leggo le righe del file
-    //w = new unsigned int
-    
+    unsigned int contatore = 0; 
     while (getline(myfile, lineafile)) {
         stringstream ss(lineafile);
         string valore;
@@ -41,10 +41,13 @@ bool LeggiFile(const string& inputFilePath,
             S = stod(linea_corrente[1]);
         }else if (linea_corrente[0]=="n"){
             n = stoi(linea_corrente[1]);
+            w = new double[n];
+            r = new double[n];
         }else if (isdigit(linea_corrente[0][0])){
-            w.push_back(stod(linea_corrente[0]));
-            r.push_back(stod(linea_corrente[1]));
-        }
+            w[contatore] = stod(linea_corrente[0]);
+            r[contatore] = stod(linea_corrente[1]);
+            contatore = contatore + 1;
+        }   
 
         // svuoto la lista per prepararmi alla prossima riga 
         linea_corrente.clear();
@@ -58,15 +61,16 @@ bool LeggiFile(const string& inputFilePath,
 
 
 
-int CalcolaTasso(const vector<double>& w,
-                const vector<double>& r,
+int CalcolaTasso(const double* const& w,
+                const double* const& r,
+                const int& n,
                 const double& S,
                 double& tasso_ritorno,
                 double& V)
 {
     double contatore = 0.0;
     
-    for(size_t i = 0; i < w.size(); i++){
+    for(int i = 0; i < n; i++){
         contatore = contatore + (1 + r[i])*w[i];
     }
     tasso_ritorno = contatore - 1;
@@ -78,8 +82,8 @@ int CalcolaTasso(const vector<double>& w,
 bool ScriviFile(const string& outputFileName,
                 const double& S,
                 const int& n,
-                const vector<double>& w,
-                const vector<double>& r,
+                const double* const& w,
+                const double* const& r,
                 const double& tasso_ritorno,
                 const double& V)
 {
@@ -95,14 +99,14 @@ bool ScriviFile(const string& outputFileName,
     
     outfile << defaultfloat;
     outfile << "w = [ ";
-    for (auto itor = w.begin(); itor != w.end(); ++itor) {
-    outfile << *itor <<' ';
+    for (int i = 0; i < n; i++) {
+    outfile << w[i] <<' ';
     }
     outfile << "]" << endl;
 
     outfile << "r = [ ";
-    for (auto itor = r.begin(); itor != r.end(); ++itor) {
-        outfile << *itor << ' ';
+    for (int i = 0; i < n; i++) {
+        outfile << r[i] << ' ';
     }
     outfile << "]" << endl;
     outfile << "Rate of return of the portfolio: " << tasso_ritorno << endl;
