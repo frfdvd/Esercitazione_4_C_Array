@@ -17,8 +17,8 @@ using namespace std;
 bool LeggiFile(const string& inputFilePath,
                 double& S,
                 int& n,
-                vector<double>& w,
-                vector<double>& r);
+                double*& w,
+                double*& r);
 
 
 
@@ -27,8 +27,9 @@ bool LeggiFile(const string& inputFilePath,
 // r: vettore r contenente i tassi di ritorno
 // tasso_ritorno: variabile di tasso di ritorno
 // V: valore capitale alla fine
-int CalcolaTasso(const vector<double>& w,
-                const vector<double>& r,
+int CalcolaTasso(const double* const& w,
+                const double* const& r,
+                const int& n,
                 const double& S,
                 double& tasso_ritorno,
                 double& V);
@@ -41,7 +42,7 @@ int CalcolaTasso(const vector<double>& w,
 bool ScriviFile(const string& outputFileName,
                 const double& S,
                 const int& n,
-                const vector<double>& w,
-                const vector<double>& r,
+                const double* const& w,
+                const double* const& r,
                 const double& tasso_ritorno,
                 const double& V);
