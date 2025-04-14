@@ -13,8 +13,8 @@ int main(){
     int n;
     string inputFilePath = "./data.txt";
     string outputFileName = "./result.txt";
-    vector<double> w;
-    vector<double> r;
+    double* w = nullptr;
+    double* r = nullptr;
     double V;
     double tasso_ritorno;
 
@@ -22,10 +22,15 @@ int main(){
     LeggiFile(inputFilePath,S,n,w,r);
 
     // calcolo il tasso e la V
-    CalcolaTasso(w,r,S,tasso_ritorno,V);
+    CalcolaTasso(w,r,n,S,tasso_ritorno,V);
 
     // scrivo sul file result
     ScriviFile(outputFileName, S, n, w, r, tasso_ritorno, V);
+
+    delete[] w;
+    delete[] r;
+
     return 0;
     
 }
+
